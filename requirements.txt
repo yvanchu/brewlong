@@ -1,0 +1,8 @@
+# Brewlong service
+squareup
+pillow
+bleak
+python-dotenv
+
+# NiimPrintX printer driver (installed from local directory)
+# pip install -e ./NiimPrintX

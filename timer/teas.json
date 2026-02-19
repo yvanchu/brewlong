@@ -1,0 +1,126 @@
+{
+  "teas": [
+    {
+      "name": "Special 1",
+      "types": {
+        "hot": {
+          "grams": 7,
+          "stages": [
+            { "time": 30, "volume": 100 },
+            { "time": 30, "volume": 100 },
+            { "time": 45, "volume": 100 }
+          ]
+        },
+        "ice": {
+          "grams": 10,
+          "stages": [{ "time": 45, "volume": 150 }]
+        },
+        "milk": {
+          "grams": 12,
+          "stages": [{ "time": 60, "volume": 200 }]
+        }
+      }
+    },
+    {
+      "name": "Special 2",
+      "types": {
+        "hot": {
+          "grams": 7,
+          "stages": [
+            { "time": 25, "volume": 100 },
+            { "time": 30, "volume": 100 },
+            { "time": 40, "volume": 100 }
+          ]
+        },
+        "ice": {
+          "grams": 10,
+          "stages": [{ "time": 40, "volume": 150 }]
+        },
+        "milk": {
+          "grams": 12,
+          "stages": [{ "time": 55, "volume": 200 }]
+        }
+      }
+    },
+    {
+      "name": "Jasmine",
+      "types": {
+        "hot": {
+          "grams": 7,
+          "stages": [
+            { "time": 30, "volume": 100 },
+            { "time": 30, "volume": 100 },
+            { "time": 45, "volume": 100 }
+          ]
+        },
+        "ice": {
+          "grams": 10,
+          "stages": [{ "time": 30, "volume": 150 }]
+        }
+      }
+    },
+    {
+      "name": "Green",
+      "types": {
+        "hot": {
+          "grams": 6,
+          "stages": [
+            { "time": 20, "volume": 100 },
+            { "time": 25, "volume": 100 },
+            { "time": 35, "volume": 100 }
+          ]
+        },
+        "ice": {
+          "grams": 9,
+          "stages": [{ "time": 30, "volume": 150 }]
+        },
+        "milk": {
+          "grams": 11,
+          "stages": [{ "time": 50, "volume": 200 }]
+        }
+      }
+    },
+    {
+      "name": "Red",
+      "types": {
+        "hot": {
+          "grams": 7,
+          "stages": [
+            { "time": 30, "volume": 100 },
+            { "time": 35, "volume": 100 },
+            { "time": 50, "volume": 100 }
+          ]
+        },
+        "ice": {
+          "grams": 10,
+          "stages": [{ "time": 40, "volume": 150 }]
+        },
+        "milk": {
+          "grams": 12,
+          "stages": [{ "time": 60, "volume": 200 }]
+        }
+      }
+    },
+    {
+      "name": "Black",
+      "types": {
+        "hot": {
+          "grams": 8,
+          "stages": [
+            { "time": 35, "volume": 100 },
+            { "time": 40, "volume": 100 },
+            { "time": 55, "volume": 100 }
+          ]
+        },
+        "ice": {
+          "grams": 11,
+          "stages": [{ "time": 45, "volume": 150 }]
+        },
+        "milk": {
+          "grams": 13,
+          "stages": [{ "time": 65, "volume": 200 }]
+        }
+      }
+    }
+  ]
+}

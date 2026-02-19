@@ -1,0 +1,93 @@
+# ── Secrets & credentials (NEVER commit) ─────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.secret
+
+# ── Runtime state ─────────────────────────────────────────────
+printed_orders.json
+labels/
+nimmy.log
+data/
+
+# ── Python ────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+*.whl
+.installed.cfg
+MANIFEST
+dist/
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ── Virtual environments ──────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.Python
+
+# ── Testing & coverage ───────────────────────────────────────
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# ── Type checkers / linters ───────────────────────────────────
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# ── IDE / editor ─────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── macOS ─────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ── PyInstaller ───────────────────────────────────────────────
+*.manifest
+
+# ── Misc ──────────────────────────────────────────────────────
+*.log
+.ropeproject/
+.spyderproject
+.spyproject
+celerybeat-schedule
+celerybeat.pid
+/site
