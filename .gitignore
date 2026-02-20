@@ -13,6 +13,8 @@ printed_orders.json
 labels/
 nimmy.log
 data/
+SETUP.md
+setup.sh
 
 # ── Python ────────────────────────────────────────────────────
 __pycache__/

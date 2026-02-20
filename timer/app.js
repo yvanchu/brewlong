@@ -162,7 +162,11 @@
 
       // Set info box
       infoName.textContent = `${typeLabel} ${tea.name}`;
-      infoGrams.textContent = `${config.grams}g`;
+      const isMilkTea =
+        state.selectedType === "hot_milk" || state.selectedType === "ice_milk";
+      infoGrams.textContent = isMilkTea
+        ? `Filter · ${config.grams}g`
+        : `${config.grams}g`;
       infoBox.classList.add("outlined");
       state.infoOutlined = true;
 

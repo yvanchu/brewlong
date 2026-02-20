@@ -3,17 +3,17 @@
 import logging
 from datetime import datetime, timedelta, timezone
 
-from square.client import Client
+from square.client import Square
+from square.core.api_error import ApiError
 
 from .config import SQUARE_ACCESS_TOKEN, SQUARE_LOCATION_ID
 
 logger = logging.getLogger(__name__)
 
 
-def _build_client() -> Client:
-    return Client(
-        access_token=SQUARE_ACCESS_TOKEN,
-        environment="production",
+def _build_client() -> Square:
+    return Square(
+        token=SQUARE_ACCESS_TOKEN,
     )
 
 
@@ -30,47 +30,45 @@ def fetch_completed_orders(lookback_hours: int = 4) -> list[dict]:
         datetime.now(timezone.utc) - timedelta(hours=lookback_hours)
     ).isoformat()
 
-    body = {
-        "location_ids": [SQUARE_LOCATION_ID],
-        "query": {
-            "filter": {
-                "state_filter": {"states": ["COMPLETED"]},
-                "date_time_filter": {
-                    "created_at": {"start_at": start_at},
+    try:
+        result = client.orders.search(
+            location_ids=[SQUARE_LOCATION_ID],
+            query={
+                "filter": {
+                    "state_filter": {"states": ["COMPLETED"]},
+                    "date_time_filter": {
+                        "created_at": {"start_at": start_at},
+                    },
+                },
+                "sort": {
+                    "sort_field": "CREATED_AT",
+                    "sort_order": "ASC",
                 },
             },
-            "sort": {
-                "sort_field": "CREATED_AT",
-                "sort_order": "ASC",
-            },
-        },
-    }
-
-    result = client.orders.search_orders(body=body)
-
-    if result.is_error():
-        logger.error("Square API error: %s", result.errors)
+        )
+    except ApiError as exc:
+        logger.error("Square API error: %s", exc.errors)
         return []
 
-    orders = result.body.get("orders", [])
+    orders = result.orders or []
     parsed: list[dict] = [_parse_order(o) for o in orders]
 
     logger.info("Fetched %d completed order(s) from Square", len(parsed))
     return parsed
 
 
-def _parse_order(order: dict) -> dict:
-    """Parse a raw Square order dict into our simplified format."""
-    order_id: str = order["id"]
-    order_number = order_id[-4:].upper()
+def _parse_order(order) -> dict:
+    """Parse a Square Order object into our simplified format."""
+    order_id: str = order.id
+    order_number = order.ticket_name or order_id[-4:].upper()
 
     line_items: list[dict] = []
-    for item in order.get("line_items", []):
-        modifiers = [m["name"] for m in item.get("modifiers", [])]
+    for item in order.line_items or []:
+        modifiers = [m.name for m in (item.modifiers or [])]
         line_items.append(
             {
-                "name": item.get("name", "Unknown"),
-                "quantity": int(item.get("quantity", "1")),
+                "name": item.name or "Unknown",
+                "quantity": int(item.quantity or "1"),
                 "modifiers": modifiers,
             }
         )
@@ -88,17 +86,16 @@ def fetch_order_by_id(order_id: str) -> dict | None:
     Returns the parsed order dict, or None if not found.
     """
     client = _build_client()
-    result = client.orders.retrieve_order(order_id=order_id)
-
-    if result.is_error():
-        logger.error("Square API error: %s", result.errors)
+    try:
+        result = client.orders.get(order_id=order_id)
+    except ApiError as exc:
+        logger.error("Square API error: %s", exc.errors)
         return None
 
-    order = result.body.get("order")
-    if order is None:
+    if result.order is None:
         return None
 
-    return _parse_order(order)
+    return _parse_order(result.order)
 
 
 def fetch_order_by_number(

@@ -3,6 +3,7 @@ squareup
 pillow
 bleak
 python-dotenv
+devtools
 
 # NiimPrintX printer driver (installed from local directory)
 # pip install -e ./NiimPrintX

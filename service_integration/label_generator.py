@@ -113,7 +113,7 @@ def generate_label(
         y = bbox[3] + 2
 
     # ── 4. Order number (bold, horizontally centred, pinned to bottom) ─────
-    order_text = f"#{order_number}"
+    order_text = f"{order_number}"
     bbox = draw.textbbox((0, 0), order_text, font=order_font)
     text_w = bbox[2] - bbox[0]
     text_h = bbox[3] - bbox[1]
