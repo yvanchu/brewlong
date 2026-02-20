@@ -57,14 +57,23 @@
     selScreen.appendChild(teaGroup);
 
     // Type list
+    const TYPE_OPTIONS = [
+      { key: "hot", label: "Hot Tea" },
+      { key: "ice", label: "Ice Tea" },
+      { key: "hot_milk", label: "Hot Milk Tea" },
+      { key: "ice_milk", label: "Ice Milk Tea" },
+    ];
+    const typeLabels = Object.fromEntries(
+      TYPE_OPTIONS.map((t) => [t.key, t.label]),
+    );
+
     const typeGroup = el("div", "list-group");
     typeGroup.appendChild(el("div", "list-label", "Type"));
     const typeItems = el("div", "list-items");
-    ["hot", "ice", "milk"].forEach((type) => {
-      const label = type.charAt(0).toUpperCase() + type.slice(1);
+    TYPE_OPTIONS.forEach(({ key, label }) => {
       const item = el("div", "list-item", label);
-      item.dataset.type = type;
-      item.addEventListener("click", () => selectType(type));
+      item.dataset.type = key;
+      item.addEventListener("click", () => selectType(key));
       typeItems.appendChild(item);
     });
     typeGroup.appendChild(typeItems);
@@ -110,12 +119,18 @@
 
       // Update type availability
       const tea = TEAS[index];
+      const availableTypes = Object.keys(tea.types);
       Array.from(typeItems.children).forEach((item) => {
         const t = item.dataset.type;
         const available = t in tea.types;
         item.classList.toggle("disabled", !available);
         item.classList.remove("selected");
       });
+
+      // Auto-select if only one type is available
+      if (availableTypes.length === 1) {
+        selectType(availableTypes[0]);
+      }
 
       updateStartBtn();
     }
@@ -143,9 +158,7 @@
     function startBrew() {
       const tea = TEAS[state.selectedTea];
       const config = tea.types[state.selectedType];
-      const typeLabel =
-        state.selectedType.charAt(0).toUpperCase() +
-        state.selectedType.slice(1);
+      const typeLabel = typeLabels[state.selectedType] || state.selectedType;
 
       // Set info box
       infoName.textContent = `${typeLabel} ${tea.name}`;
