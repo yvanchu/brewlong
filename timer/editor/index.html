@@ -1,0 +1,1214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brewlong — Tea Editor</title>
+    <style>
+      /* ===== RESET & BASE ===== */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        height: 100%;
+      }
+      body {
+        min-height: 100%;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue",
+          sans-serif;
+        background: #1a1a2e;
+        color: #eaeaea;
+        line-height: 1.5;
+      }
+
+      /* ===== LAYOUT ===== */
+      .shell {
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 32px 20px 80px;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+      }
+      header h1 {
+        font-size: 22px;
+        font-weight: 700;
+      }
+      header h1 span {
+        color: #00d4aa;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      /* ===== BUTTONS ===== */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition:
+          opacity 0.15s,
+          background 0.15s;
+      }
+      .btn:active {
+        opacity: 0.75;
+      }
+
+      .btn-primary {
+        background: #00d4aa;
+        color: #1a1a2e;
+      }
+      .btn-secondary {
+        background: #2d2d44;
+        color: #eaeaea;
+      }
+      .btn-danger {
+        background: transparent;
+        color: #ff4757;
+        border: 1px solid #ff4757;
+      }
+      .btn-danger:hover {
+        background: rgba(255, 71, 87, 0.12);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: #8a8a9a;
+      }
+      .btn-ghost:hover {
+        color: #eaeaea;
+      }
+
+      .btn-sm {
+        padding: 5px 10px;
+        font-size: 12px;
+        border-radius: 6px;
+      }
+      .btn-icon {
+        padding: 6px;
+        font-size: 16px;
+        line-height: 1;
+      }
+
+      /* ===== EMPTY STATE ===== */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #8a8a9a;
+      }
+      .empty-state .icon {
+        font-size: 48px;
+        margin-bottom: 12px;
+      }
+      .empty-state p {
+        font-size: 15px;
+        margin-bottom: 20px;
+      }
+
+      /* ===== TEA CARD ===== */
+      .tea-card {
+        background: #16213e;
+        border: 1px solid #2d2d44;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        overflow: hidden;
+        transition: border-color 0.2s;
+      }
+      .tea-card:hover {
+        border-color: #3d3d5c;
+      }
+      .tea-card.expanded {
+        border-color: #00d4aa;
+      }
+
+      .tea-header {
+        display: flex;
+        align-items: center;
+        padding: 14px 16px;
+        cursor: pointer;
+        gap: 12px;
+      }
+      .tea-header:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .tea-chevron {
+        font-size: 12px;
+        color: #8a8a9a;
+        transition: transform 0.2s;
+        flex-shrink: 0;
+      }
+      .tea-card.expanded .tea-chevron {
+        transform: rotate(90deg);
+      }
+
+      .tea-name-display {
+        flex: 1;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .tea-badges {
+        display: flex;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+      .badge {
+        padding: 3px 8px;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-radius: 4px;
+        background: #2d2d44;
+        color: #8a8a9a;
+      }
+      .badge.active {
+        background: rgba(0, 212, 170, 0.15);
+        color: #00d4aa;
+      }
+
+      .tea-actions {
+        display: flex;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+
+      /* ===== TEA BODY ===== */
+      .tea-body {
+        display: none;
+        padding: 0 16px 16px;
+      }
+      .tea-card.expanded .tea-body {
+        display: block;
+      }
+
+      /* --- Name field --- */
+      .field-group {
+        margin-bottom: 16px;
+      }
+      .field-label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #8a8a9a;
+        margin-bottom: 6px;
+      }
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 9px 12px;
+        font-size: 14px;
+        font-family: inherit;
+        background: #1a1a2e;
+        border: 1px solid #2d2d44;
+        border-radius: 6px;
+        color: #eaeaea;
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      input:focus {
+        border-color: #00d4aa;
+      }
+      input[type="number"] {
+        width: 90px;
+      }
+
+      /* --- Type Tabs --- */
+      .type-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid #2d2d44;
+        margin-bottom: 16px;
+      }
+      .type-tab {
+        padding: 8px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #8a8a9a;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.15s,
+          border-color 0.15s;
+        position: relative;
+      }
+      .type-tab:hover {
+        color: #eaeaea;
+      }
+      .type-tab.active {
+        color: #00d4aa;
+        border-bottom-color: #00d4aa;
+      }
+      .type-tab.has-data::after {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #00d4aa;
+        position: absolute;
+        top: 6px;
+        right: 4px;
+      }
+
+      /* --- Type Panel --- */
+      .type-panel {
+        display: none;
+      }
+      .type-panel.active {
+        display: block;
+      }
+
+      .type-toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .toggle-label {
+        font-size: 13px;
+        color: #8a8a9a;
+      }
+
+      /* Toggle switch */
+      .switch {
+        position: relative;
+        width: 44px;
+        height: 24px;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .switch .slider {
+        position: absolute;
+        inset: 0;
+        background: #2d2d44;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .switch .slider::before {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        left: 3px;
+        top: 3px;
+        background: #8a8a9a;
+        border-radius: 50%;
+        transition:
+          transform 0.2s,
+          background 0.2s;
+      }
+      .switch input:checked + .slider {
+        background: #00d4aa;
+      }
+      .switch input:checked + .slider::before {
+        transform: translateX(20px);
+        background: #1a1a2e;
+      }
+
+      .type-config {
+        margin-top: 4px;
+      }
+      .type-config.disabled {
+        opacity: 0.3;
+        pointer-events: none;
+      }
+
+      /* Grams row */
+      .grams-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .grams-row .field-label {
+        margin: 0;
+      }
+      .grams-row input {
+        width: 80px;
+      }
+      .grams-unit {
+        font-size: 14px;
+        color: #8a8a9a;
+      }
+
+      /* --- Stages --- */
+      .stages-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .stage-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        background: #1a1a2e;
+        border: 1px solid #2d2d44;
+        border-radius: 8px;
+        margin-bottom: 6px;
+      }
+      .stage-num {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #8a8a9a;
+        width: 52px;
+        flex-shrink: 0;
+      }
+      .stage-field {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .stage-field label {
+        font-size: 11px;
+        color: #8a8a9a;
+        font-weight: 600;
+      }
+      .stage-field input {
+        width: 70px;
+        text-align: center;
+        padding: 6px 8px;
+        font-size: 13px;
+      }
+      .stage-unit {
+        font-size: 12px;
+        color: #555;
+      }
+
+      .stage-remove {
+        margin-left: auto;
+        background: none;
+        border: none;
+        color: #ff4757;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 4px;
+        line-height: 1;
+        border-radius: 4px;
+      }
+      .stage-remove:hover {
+        background: rgba(255, 71, 87, 0.12);
+      }
+
+      /* ===== IMPORT / EXPORT MODAL ===== */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 100;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-overlay.open {
+        display: flex;
+      }
+
+      .modal {
+        background: #16213e;
+        border: 1px solid #2d2d44;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 560px;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        border-bottom: 1px solid #2d2d44;
+      }
+      .modal-header h2 {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .modal-body {
+        padding: 20px;
+        flex: 1;
+        overflow-y: auto;
+      }
+      .modal-body textarea {
+        width: 100%;
+        min-height: 260px;
+        padding: 12px;
+        font-family: "SF Mono", Menlo, monospace;
+        font-size: 12px;
+        background: #1a1a2e;
+        border: 1px solid #2d2d44;
+        border-radius: 8px;
+        color: #eaeaea;
+        resize: vertical;
+        outline: none;
+      }
+      .modal-body textarea:focus {
+        border-color: #00d4aa;
+      }
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 12px 20px;
+        border-top: 1px solid #2d2d44;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        background: #00d4aa;
+        color: #1a1a2e;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        opacity: 0;
+        transition:
+          transform 0.3s,
+          opacity 0.3s;
+        z-index: 200;
+      }
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+
+      /* ===== DRAG HANDLE ===== */
+      .drag-handle {
+        cursor: grab;
+        color: #555;
+        font-size: 16px;
+        padding: 0 4px;
+        user-select: none;
+      }
+      .drag-handle:active {
+        cursor: grabbing;
+      }
+      .tea-card.dragging {
+        opacity: 0.5;
+      }
+      .tea-card.drag-over {
+        border-top: 2px solid #00d4aa;
+      }
+
+      /* ===== SCROLLBAR ===== */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #2d2d44;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #3d3d5c;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 600px) {
+        .shell {
+          padding: 16px 12px 80px;
+        }
+        .stage-row {
+          flex-wrap: wrap;
+        }
+        .stage-num {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <h1>🍵 <span>Brewlong</span> Tea Editor</h1>
+        <div class="header-actions">
+          <button
+            class="btn btn-secondary btn-sm"
+            id="btn-import"
+            title="Import JSON"
+          >
+            ⬆ Import
+          </button>
+          <button
+            class="btn btn-secondary btn-sm"
+            id="btn-export"
+            title="View / Copy JSON"
+          >
+            ⬇ Export
+          </button>
+          <button
+            class="btn btn-primary btn-sm"
+            id="btn-download"
+            title="Download teas.json"
+          >
+            💾 Save
+          </button>
+        </div>
+      </header>
+
+      <div id="tea-list"></div>
+
+      <div id="empty-state" class="empty-state" style="display: none">
+        <div class="icon">🍃</div>
+        <p>No teas yet — add one to get started.</p>
+      </div>
+
+      <button class="btn btn-primary" id="btn-add-tea" style="width: 100%">
+        + Add Tea
+      </button>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal-overlay" id="modal-import">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Import JSON</h2>
+          <button class="btn btn-ghost btn-icon" id="modal-import-close">
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 13px; color: #8a8a9a; margin-bottom: 10px">
+            Paste the contents of a
+            <code style="color: #00d4aa">teas.json</code> file below. This will
+            replace all current data.
+          </p>
+          <textarea
+            id="import-textarea"
+            spellcheck="false"
+            placeholder='{ "teas": [ ... ] }'
+          ></textarea>
+          <p
+            id="import-error"
+            style="
+              color: #ff4757;
+              font-size: 12px;
+              margin-top: 8px;
+              display: none;
+            "
+          ></p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-sm" id="import-cancel">
+            Cancel
+          </button>
+          <button class="btn btn-primary btn-sm" id="import-confirm">
+            Import
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal-overlay" id="modal-export">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Export JSON</h2>
+          <button class="btn btn-ghost btn-icon" id="modal-export-close">
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <textarea id="export-textarea" readonly spellcheck="false"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-sm" id="export-copy">
+            📋 Copy
+          </button>
+          <button class="btn btn-primary btn-sm" id="export-download">
+            💾 Download
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      (function () {
+        "use strict";
+
+        const TYPE_OPTIONS = [
+          { key: "hot", label: "Hot" },
+          { key: "ice", label: "Ice" },
+          { key: "hot_milk", label: "Hot Milk" },
+          { key: "ice_milk", label: "Ice Milk" },
+        ];
+
+        // ===== State =====
+        let teas = [];
+        let expandedIndex = null;
+
+        // ===== DOM refs =====
+        const teaListEl = document.getElementById("tea-list");
+        const emptyStateEl = document.getElementById("empty-state");
+        const btnAddTea = document.getElementById("btn-add-tea");
+        const toastEl = document.getElementById("toast");
+
+        // ===== Init: load teas.json =====
+        (async function init() {
+          try {
+            const res = await fetch("../teas.json");
+            if (res.ok) {
+              const data = await res.json();
+              if (Array.isArray(data.teas)) teas = data.teas;
+            }
+          } catch (_) {
+            /* start empty */
+          }
+          render();
+        })();
+
+        // ===== Render =====
+        function render() {
+          teaListEl.innerHTML = "";
+          emptyStateEl.style.display = teas.length === 0 ? "block" : "none";
+
+          teas.forEach((tea, i) => {
+            teaListEl.appendChild(buildTeaCard(tea, i));
+          });
+        }
+
+        function buildTeaCard(tea, index) {
+          const card = document.createElement("div");
+          card.className =
+            "tea-card" + (expandedIndex === index ? " expanded" : "");
+          card.draggable = true;
+          card.dataset.index = index;
+
+          // --- Drag ---
+          card.addEventListener("dragstart", (e) => {
+            card.classList.add("dragging");
+            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.setData("text/plain", index);
+          });
+          card.addEventListener("dragend", () =>
+            card.classList.remove("dragging"),
+          );
+          card.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            card.classList.add("drag-over");
+          });
+          card.addEventListener("dragleave", () =>
+            card.classList.remove("drag-over"),
+          );
+          card.addEventListener("drop", (e) => {
+            e.preventDefault();
+            card.classList.remove("drag-over");
+            const from = parseInt(e.dataTransfer.getData("text/plain"), 10);
+            const to = index;
+            if (from !== to) {
+              const [moved] = teas.splice(from, 1);
+              teas.splice(to, 0, moved);
+              expandedIndex = to;
+              render();
+            }
+          });
+
+          // --- Header ---
+          const header = document.createElement("div");
+          header.className = "tea-header";
+
+          const chevron = document.createElement("span");
+          chevron.className = "tea-chevron";
+          chevron.textContent = "▶";
+
+          const nameDisp = document.createElement("span");
+          nameDisp.className = "tea-name-display";
+          nameDisp.textContent = tea.name || "Untitled Tea";
+
+          const badges = document.createElement("span");
+          badges.className = "tea-badges";
+          TYPE_OPTIONS.forEach(({ key, label }) => {
+            if (tea.types && tea.types[key]) {
+              const b = document.createElement("span");
+              b.className = "badge active";
+              b.textContent = label;
+              badges.appendChild(b);
+            }
+          });
+
+          const actions = document.createElement("span");
+          actions.className = "tea-actions";
+
+          const dupBtn = document.createElement("button");
+          dupBtn.className = "btn btn-ghost btn-icon btn-sm";
+          dupBtn.title = "Duplicate";
+          dupBtn.textContent = "⧉";
+          dupBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            teas.splice(index + 1, 0, JSON.parse(JSON.stringify(tea)));
+            teas[index + 1].name = tea.name + " (copy)";
+            expandedIndex = index + 1;
+            render();
+          });
+
+          const delBtn = document.createElement("button");
+          delBtn.className = "btn btn-danger btn-icon btn-sm";
+          delBtn.title = "Delete";
+          delBtn.textContent = "✕";
+          delBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (confirm(`Delete "${tea.name}"?`)) {
+              teas.splice(index, 1);
+              if (expandedIndex === index) expandedIndex = null;
+              else if (expandedIndex !== null && expandedIndex > index)
+                expandedIndex--;
+              render();
+            }
+          });
+
+          actions.appendChild(dupBtn);
+          actions.appendChild(delBtn);
+
+          header.appendChild(chevron);
+          header.appendChild(nameDisp);
+          header.appendChild(badges);
+          header.appendChild(actions);
+          header.addEventListener("click", () => {
+            expandedIndex = expandedIndex === index ? null : index;
+            render();
+          });
+
+          card.appendChild(header);
+
+          // --- Body ---
+          const body = document.createElement("div");
+          body.className = "tea-body";
+
+          // Name input
+          const nameGroup = document.createElement("div");
+          nameGroup.className = "field-group";
+          const nameLabel = document.createElement("label");
+          nameLabel.className = "field-label";
+          nameLabel.textContent = "Tea Name";
+          const nameInput = document.createElement("input");
+          nameInput.type = "text";
+          nameInput.value = tea.name || "";
+          nameInput.placeholder = "e.g. Jasmine";
+          nameInput.addEventListener("input", () => {
+            tea.name = nameInput.value;
+            nameDisp.textContent = nameInput.value || "Untitled Tea";
+          });
+          nameGroup.appendChild(nameLabel);
+          nameGroup.appendChild(nameInput);
+          body.appendChild(nameGroup);
+
+          // Type tabs
+          let activeType = TYPE_OPTIONS[0].key;
+          // pick the first type that has data, or the first type
+          for (const { key } of TYPE_OPTIONS) {
+            if (tea.types && tea.types[key]) {
+              activeType = key;
+              break;
+            }
+          }
+
+          const typeTabs = document.createElement("div");
+          typeTabs.className = "type-tabs";
+
+          const panels = [];
+
+          TYPE_OPTIONS.forEach(({ key, label }) => {
+            // Tab button
+            const tab = document.createElement("div");
+            tab.className = "type-tab" + (key === activeType ? " active" : "");
+            if (tea.types && tea.types[key]) tab.classList.add("has-data");
+            tab.textContent = label;
+            tab.addEventListener("click", () => {
+              typeTabs
+                .querySelectorAll(".type-tab")
+                .forEach((t) => t.classList.remove("active"));
+              tab.classList.add("active");
+              panels.forEach((p) =>
+                p.el.classList.toggle("active", p.key === key),
+              );
+            });
+            typeTabs.appendChild(tab);
+
+            // Panel
+            const panel = document.createElement("div");
+            panel.className =
+              "type-panel" + (key === activeType ? " active" : "");
+            buildTypePanel(panel, tea, key, index, typeTabs);
+            panels.push({ el: panel, key });
+            body.appendChild(typeTabs); // appended once below
+          });
+
+          body.appendChild(typeTabs);
+          panels.forEach((p) => body.appendChild(p.el));
+
+          card.appendChild(body);
+          return card;
+        }
+
+        function buildTypePanel(panel, tea, typeKey, teaIndex, typeTabs) {
+          if (!tea.types) tea.types = {};
+          const hasData = !!tea.types[typeKey];
+
+          // Toggle row
+          const toggleRow = document.createElement("div");
+          toggleRow.className = "type-toggle-row";
+          const toggleLabel = document.createElement("span");
+          toggleLabel.className = "toggle-label";
+          toggleLabel.textContent = "Enable this brew type";
+          const sw = document.createElement("label");
+          sw.className = "switch";
+          const swInput = document.createElement("input");
+          swInput.type = "checkbox";
+          swInput.checked = hasData;
+          const slider = document.createElement("span");
+          slider.className = "slider";
+          sw.appendChild(swInput);
+          sw.appendChild(slider);
+          toggleRow.appendChild(toggleLabel);
+          toggleRow.appendChild(sw);
+          panel.appendChild(toggleRow);
+
+          // Config area
+          const configArea = document.createElement("div");
+          configArea.className = "type-config" + (hasData ? "" : " disabled");
+
+          // Initialize data if needed
+          if (!tea.types[typeKey]) {
+            tea.types[typeKey] = {
+              grams: 7,
+              stages: [{ time: 30, volume: 100 }],
+            };
+          }
+          const config = tea.types[typeKey];
+
+          // Grams
+          const gramsRow = document.createElement("div");
+          gramsRow.className = "grams-row";
+          const gramsLabel = document.createElement("span");
+          gramsLabel.className = "field-label";
+          gramsLabel.textContent = "Grams";
+          const gramsInput = document.createElement("input");
+          gramsInput.type = "number";
+          gramsInput.min = "1";
+          gramsInput.value = config.grams;
+          gramsInput.addEventListener("input", () => {
+            config.grams = parseInt(gramsInput.value, 10) || 0;
+          });
+          const gramsUnit = document.createElement("span");
+          gramsUnit.className = "grams-unit";
+          gramsUnit.textContent = "g";
+          gramsRow.appendChild(gramsLabel);
+          gramsRow.appendChild(gramsInput);
+          gramsRow.appendChild(gramsUnit);
+          configArea.appendChild(gramsRow);
+
+          // Stages header
+          const stagesHeader = document.createElement("div");
+          stagesHeader.className = "stages-header";
+          const stagesLabel = document.createElement("span");
+          stagesLabel.className = "field-label";
+          stagesLabel.textContent = "Stages";
+          const addStageBtn = document.createElement("button");
+          addStageBtn.className = "btn btn-secondary btn-sm";
+          addStageBtn.textContent = "+ Stage";
+          stagesHeader.appendChild(stagesLabel);
+          stagesHeader.appendChild(addStageBtn);
+          configArea.appendChild(stagesHeader);
+
+          // Stages list
+          const stagesList = document.createElement("div");
+          stagesList.className = "stages-list";
+
+          function renderStages() {
+            stagesList.innerHTML = "";
+            config.stages.forEach((stage, si) => {
+              const row = document.createElement("div");
+              row.className = "stage-row";
+
+              const num = document.createElement("span");
+              num.className = "stage-num";
+              num.textContent = `Stage ${si + 1}`;
+
+              const timeField = document.createElement("div");
+              timeField.className = "stage-field";
+              const timeLbl = document.createElement("label");
+              timeLbl.textContent = "Time";
+              const timeIn = document.createElement("input");
+              timeIn.type = "number";
+              timeIn.min = "1";
+              timeIn.value = stage.time;
+              timeIn.addEventListener("input", () => {
+                stage.time = parseInt(timeIn.value, 10) || 0;
+              });
+              const timeUnit = document.createElement("span");
+              timeUnit.className = "stage-unit";
+              timeUnit.textContent = "s";
+              timeField.appendChild(timeLbl);
+              timeField.appendChild(timeIn);
+              timeField.appendChild(timeUnit);
+
+              const volField = document.createElement("div");
+              volField.className = "stage-field";
+              const volLbl = document.createElement("label");
+              volLbl.textContent = "Volume";
+              const volIn = document.createElement("input");
+              volIn.type = "number";
+              volIn.min = "1";
+              volIn.value = stage.volume;
+              volIn.addEventListener("input", () => {
+                stage.volume = parseInt(volIn.value, 10) || 0;
+              });
+              const volUnit = document.createElement("span");
+              volUnit.className = "stage-unit";
+              volUnit.textContent = "ml";
+              volField.appendChild(volLbl);
+              volField.appendChild(volIn);
+              volField.appendChild(volUnit);
+
+              const removeBtn = document.createElement("button");
+              removeBtn.className = "stage-remove";
+              removeBtn.title = "Remove stage";
+              removeBtn.textContent = "✕";
+              removeBtn.addEventListener("click", () => {
+                config.stages.splice(si, 1);
+                if (config.stages.length === 0)
+                  config.stages.push({ time: 30, volume: 100 });
+                renderStages();
+              });
+
+              row.appendChild(num);
+              row.appendChild(timeField);
+              row.appendChild(volField);
+              if (config.stages.length > 1) row.appendChild(removeBtn);
+              stagesList.appendChild(row);
+            });
+          }
+          renderStages();
+
+          addStageBtn.addEventListener("click", () => {
+            const last = config.stages[config.stages.length - 1] || {
+              time: 30,
+              volume: 100,
+            };
+            config.stages.push({ time: last.time, volume: last.volume });
+            renderStages();
+          });
+
+          configArea.appendChild(stagesList);
+          panel.appendChild(configArea);
+
+          // Toggle handler
+          swInput.addEventListener("change", () => {
+            if (swInput.checked) {
+              if (!tea.types[typeKey] || !hasData) {
+                tea.types[typeKey] = {
+                  grams: 7,
+                  stages: [{ time: 30, volume: 100 }],
+                };
+              }
+              configArea.classList.remove("disabled");
+              // update tab dot
+              const tab = typeTabs.querySelector(
+                `.type-tab:nth-child(${TYPE_OPTIONS.findIndex((t) => t.key === typeKey) + 1})`,
+              );
+              if (tab) tab.classList.add("has-data");
+            } else {
+              delete tea.types[typeKey];
+              configArea.classList.add("disabled");
+              const tab = typeTabs.querySelector(
+                `.type-tab:nth-child(${TYPE_OPTIONS.findIndex((t) => t.key === typeKey) + 1})`,
+              );
+              if (tab) tab.classList.remove("has-data");
+            }
+            // refresh badges in header
+            const badgesEl = panel
+              .closest(".tea-card")
+              .querySelector(".tea-badges");
+            badgesEl.innerHTML = "";
+            TYPE_OPTIONS.forEach(({ key, label }) => {
+              if (tea.types && tea.types[key]) {
+                const b = document.createElement("span");
+                b.className = "badge active";
+                b.textContent = label;
+                badgesEl.appendChild(b);
+              }
+            });
+          });
+
+          // If toggle is off initially, remove the temp data we just created
+          if (!hasData) {
+            delete tea.types[typeKey];
+          }
+        }
+
+        // ===== Add Tea =====
+        btnAddTea.addEventListener("click", () => {
+          teas.push({ name: "", types: {} });
+          expandedIndex = teas.length - 1;
+          render();
+          // focus the name input
+          setTimeout(() => {
+            const cards = teaListEl.querySelectorAll(".tea-card");
+            const last = cards[cards.length - 1];
+            if (last) {
+              const inp = last.querySelector('input[type="text"]');
+              if (inp) inp.focus();
+            }
+          }, 50);
+        });
+
+        // ===== Serialize =====
+        function serialize() {
+          // Only include types that are enabled (have data)
+          const clean = teas.map((t) => {
+            const out = { name: t.name, types: {} };
+            TYPE_OPTIONS.forEach(({ key }) => {
+              if (t.types && t.types[key]) {
+                out.types[key] = {
+                  grams: t.types[key].grams,
+                  stages: t.types[key].stages.map((s) => ({
+                    time: s.time,
+                    volume: s.volume,
+                  })),
+                };
+              }
+            });
+            return out;
+          });
+          return JSON.stringify({ teas: clean }, null, 2);
+        }
+
+        // ===== Download =====
+        function downloadJSON() {
+          const blob = new Blob([serialize()], { type: "application/json" });
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "teas.json";
+          a.click();
+          URL.revokeObjectURL(a.href);
+          showToast("Downloaded teas.json");
+        }
+
+        document
+          .getElementById("btn-download")
+          .addEventListener("click", downloadJSON);
+
+        // ===== Export Modal =====
+        const modalExport = document.getElementById("modal-export");
+        const exportTA = document.getElementById("export-textarea");
+
+        document.getElementById("btn-export").addEventListener("click", () => {
+          exportTA.value = serialize();
+          modalExport.classList.add("open");
+        });
+        document
+          .getElementById("modal-export-close")
+          .addEventListener("click", () =>
+            modalExport.classList.remove("open"),
+          );
+        document
+          .getElementById("export-download")
+          .addEventListener("click", () => {
+            downloadJSON();
+            modalExport.classList.remove("open");
+          });
+        document.getElementById("export-copy").addEventListener("click", () => {
+          navigator.clipboard
+            .writeText(exportTA.value)
+            .then(() => showToast("Copied to clipboard"));
+        });
+        modalExport.addEventListener("click", (e) => {
+          if (e.target === modalExport) modalExport.classList.remove("open");
+        });
+
+        // ===== Import Modal =====
+        const modalImport = document.getElementById("modal-import");
+        const importTA = document.getElementById("import-textarea");
+        const importErr = document.getElementById("import-error");
+
+        document.getElementById("btn-import").addEventListener("click", () => {
+          importTA.value = "";
+          importErr.style.display = "none";
+          modalImport.classList.add("open");
+          setTimeout(() => importTA.focus(), 100);
+        });
+        document
+          .getElementById("modal-import-close")
+          .addEventListener("click", () =>
+            modalImport.classList.remove("open"),
+          );
+        document
+          .getElementById("import-cancel")
+          .addEventListener("click", () =>
+            modalImport.classList.remove("open"),
+          );
+        modalImport.addEventListener("click", (e) => {
+          if (e.target === modalImport) modalImport.classList.remove("open");
+        });
+
+        document
+          .getElementById("import-confirm")
+          .addEventListener("click", () => {
+            try {
+              const parsed = JSON.parse(importTA.value);
+              if (!parsed.teas || !Array.isArray(parsed.teas))
+                throw new Error('JSON must have a "teas" array.');
+              teas = parsed.teas;
+              expandedIndex = null;
+              render();
+              modalImport.classList.remove("open");
+              showToast(`Imported ${teas.length} tea(s)`);
+            } catch (err) {
+              importErr.textContent = "Invalid JSON: " + err.message;
+              importErr.style.display = "block";
+            }
+          });
+
+        // ===== Toast =====
+        let toastTimeout;
+        function showToast(msg) {
+          toastEl.textContent = msg;
+          toastEl.classList.add("show");
+          clearTimeout(toastTimeout);
+          toastTimeout = setTimeout(
+            () => toastEl.classList.remove("show"),
+            2500,
+          );
+        }
+      })();
+    </script>
+  </body>
+</html>
