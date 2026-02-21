@@ -174,6 +174,8 @@
       stagesContainer.innerHTML = "";
       state.stages = [];
 
+      const showTemp = tea.name === "Black" && (state.selectedType === "hot" || state.selectedType === "ice");
+
       config.stages.forEach((stageConfig, i) => {
         const box = el("div", "stage-box idle");
         const label = el("div", "stage-label", `Stage ${i + 1}`);
@@ -182,6 +184,9 @@
         const check = el("div", "stage-done-check", "✓");
 
         box.appendChild(label);
+        if (showTemp) {
+          box.appendChild(el("div", "stage-temp", "195°F"));
+        }
         box.appendChild(volume);
         box.appendChild(timer);
         box.appendChild(check);

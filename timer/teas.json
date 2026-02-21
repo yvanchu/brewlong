@@ -4,46 +4,20 @@
       "name": "Banana Cream",
       "types": {
         "hot": {
-          "grams": 7,
+          "grams": 5,
           "stages": [
             {
-              "time": 30,
-              "volume": 100
-            },
-            {
-              "time": 30,
-              "volume": 100
-            },
-            {
-              "time": 45,
+              "time": 180,
               "volume": 100
             }
           ]
         },
         "ice": {
-          "grams": 10,
+          "grams": 5,
           "stages": [
             {
-              "time": 45,
-              "volume": 150
-            }
-          ]
-        },
-        "hot_milk": {
-          "grams": 10,
-          "stages": [
-            {
-              "time": 50,
-              "volume": 150
-            }
-          ]
-        },
-        "ice_milk": {
-          "grams": 9,
-          "stages": [
-            {
-              "time": 60,
-              "volume": 200
+              "time": 180,
+              "volume": 100
             }
           ]
         }
@@ -53,15 +27,11 @@
       "name": "Lavender Grape",
       "types": {
         "ice": {
-          "grams": 10,
+          "grams": 7,
           "stages": [
             {
-              "time": 40,
-              "volume": 150
-            },
-            {
-              "time": 40,
-              "volume": 150
+              "time": 180,
+              "volume": 200
             }
           ]
         }
@@ -71,28 +41,54 @@
       "name": "Jasmine",
       "types": {
         "hot": {
-          "grams": 7,
+          "grams": 6,
           "stages": [
             {
-              "time": 30,
-              "volume": 100
+              "time": 50,
+              "volume": 120
             },
             {
-              "time": 30,
-              "volume": 100
+              "time": 20,
+              "volume": 120
             },
             {
-              "time": 45,
-              "volume": 100
+              "time": 40,
+              "volume": 120
             }
           ]
         },
         "ice": {
-          "grams": 10,
+          "grams": 4,
           "stages": [
             {
-              "time": 30,
-              "volume": 150
+              "time": 50,
+              "volume": 75
+            },
+            {
+              "time": 20,
+              "volume": 75
+            },
+            {
+              "time": 40,
+              "volume": 75
+            }
+          ]
+        },
+        "hot_milk": {
+          "grams": 7,
+          "stages": [
+            {
+              "time": 180,
+              "volume": 140
+            }
+          ]
+        },
+        "ice_milk": {
+          "grams": 7,
+          "stages": [
+            {
+              "time": 180,
+              "volume": 140
             }
           ]
         }
@@ -105,43 +101,51 @@
           "grams": 6,
           "stages": [
             {
-              "time": 20,
-              "volume": 100
+              "time": 60,
+              "volume": 120
             },
             {
-              "time": 25,
-              "volume": 100
+              "time": 30,
+              "volume": 120
             },
             {
-              "time": 35,
-              "volume": 100
+              "time": 30,
+              "volume": 120
             }
           ]
         },
         "ice": {
-          "grams": 9,
+          "grams": 4,
           "stages": [
             {
-              "time": 30,
-              "volume": 150
+              "time": 90,
+              "volume": 75
+            },
+            {
+              "time": 50,
+              "volume": 75
+            },
+            {
+              "time": 40,
+              "volume": 75
             }
           ]
         },
         "hot_milk": {
-          "grams": 9,
+          "grams": 7,
           "stages": [
             {
-              "time": 40,
-              "volume": 150
+              "time": 180,
+              "volume": 140
             }
           ]
         },
         "ice_milk": {
-          "grams": 11,
+          "grams": 7,
           "stages": [
             {
-              "time": 50,
-              "volume": 200
+              "time": 180,
+              "volume": 140
             }
           ]
         }
@@ -151,46 +155,46 @@
       "name": "Red",
       "types": {
         "hot": {
-          "grams": 7,
+          "grams": 6,
           "stages": [
             {
-              "time": 30,
-              "volume": 100
-            },
-            {
-              "time": 35,
-              "volume": 100
+              "time": 50,
+              "volume": 120
             },
             {
               "time": 50,
-              "volume": 100
+              "volume": 120
+            },
+            {
+              "time": 50,
+              "volume": 120
             }
           ]
         },
         "ice": {
-          "grams": 10,
+          "grams": 6,
           "stages": [
             {
-              "time": 40,
-              "volume": 150
+              "time": 120,
+              "volume": 240
             }
           ]
         },
         "hot_milk": {
-          "grams": 10,
+          "grams": 7,
           "stages": [
             {
-              "time": 50,
-              "volume": 150
+              "time": 180,
+              "volume": 140
             }
           ]
         },
         "ice_milk": {
-          "grams": 12,
+          "grams": 7,
           "stages": [
             {
-              "time": 60,
-              "volume": 200
+              "time": 180,
+              "volume": 140
             }
           ]
         }
@@ -200,46 +204,54 @@
       "name": "Black",
       "types": {
         "hot": {
-          "grams": 8,
+          "grams": 6,
           "stages": [
             {
-              "time": 35,
-              "volume": 100
+              "time": 25,
+              "volume": 120
+            },
+            {
+              "time": 30,
+              "volume": 120
             },
             {
               "time": 40,
-              "volume": 100
-            },
-            {
-              "time": 55,
-              "volume": 100
+              "volume": 120
             }
           ]
         },
         "ice": {
-          "grams": 11,
+          "grams": 4.5,
           "stages": [
             {
-              "time": 45,
-              "volume": 150
+              "time": 30,
+              "volume": 75
+            },
+            {
+              "time": 40,
+              "volume": 75
+            },
+            {
+              "time": 50,
+              "volume": 75
             }
           ]
         },
         "hot_milk": {
-          "grams": 11,
+          "grams": 7,
           "stages": [
             {
-              "time": 55,
-              "volume": 150
+              "time": 180,
+              "volume": 140
             }
           ]
         },
         "ice_milk": {
-          "grams": 13,
+          "grams": 7,
           "stages": [
             {
-              "time": 65,
-              "volume": 200
+              "time": 180,
+              "volume": 140
             }
           ]
         }

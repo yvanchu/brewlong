@@ -352,6 +352,21 @@ body {
   left: 10px;
 }
 
+.stage-temp {
+  font-size: 28px;
+  font-weight: 600;
+  color: #ff6b6b;
+  margin-bottom: 6px;
+}
+
+.stage-box.running .stage-temp {
+  color: rgba(26, 26, 46, 0.6);
+}
+
+.stage-box.done .stage-temp {
+  display: none;
+}
+
 .stage-done-check {
   display: none;
   font-size: 28px;
