@@ -1,28 +1,28 @@
 {
   "teas": [
     {
-      "name": "Banana Cream",
+      "name": "Banana Cream/Sun Moon Lake Milk Tea [350ml]",
       "types": {
         "ice_milk": {
-          "grams": 5,
+          "grams": 17.5,
           "stages": [
             {
               "time": 180,
-              "volume": 100
+              "volume": 350
             }
           ]
         }
       }
     },
     {
-      "name": "Lavender Grape",
+      "name": "Lavender Grape/Green [350ml]",
       "types": {
         "ice": {
-          "grams": 7,
+          "grams": 12.25,
           "stages": [
             {
               "time": 180,
-              "volume": 200
+              "volume": 350
             }
           ]
         }
