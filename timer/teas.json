@@ -58,6 +58,28 @@
           ]
         }
       }
+    },
+    {
+      "name": "Green",
+      "types": {
+        "hot": {
+          "grams": 6,
+          "stages": [
+            {
+              "time": 60,
+              "volume": 120
+            },
+            {
+              "time": 30,
+              "volume": 120
+            },
+            {
+              "time": 30,
+              "volume": 120
+            }
+          ]
+        }
+      }
     }
   ]
 }
