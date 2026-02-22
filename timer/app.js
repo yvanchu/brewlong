@@ -174,7 +174,9 @@
       stagesContainer.innerHTML = "";
       state.stages = [];
 
-      const showTemp = tea.name === "Black" && (state.selectedType === "hot" || state.selectedType === "ice");
+      const showTemp =
+        tea.name === "Black" &&
+        (state.selectedType === "hot" || state.selectedType === "ice");
 
       config.stages.forEach((stageConfig, i) => {
         const box = el("div", "stage-box idle");
@@ -379,8 +381,8 @@
     }
   }
 
-  // ===== Initialize 4 columns =====
-  for (let i = 0; i < 4; i++) {
+  // ===== Initialize 3 columns =====
+  for (let i = 0; i < 3; i++) {
     createColumn();
   }
 })();
