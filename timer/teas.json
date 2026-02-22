@@ -4,11 +4,11 @@
       "name": "Banana Cream/Sun Moon Lake Milk Tea [350ml]",
       "types": {
         "ice_milk": {
-          "grams": 17.5,
+          "grams": 15,
           "stages": [
             {
               "time": 180,
-              "volume": 350
+              "volume": 300
             }
           ]
         }
