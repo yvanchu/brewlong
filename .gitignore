@@ -16,6 +16,9 @@ data/
 SETUP.md
 setup.sh
 
+# ── Analysis (fetched business data) ─────────────────────────
+analysis/data/
+
 # ── Python ────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
