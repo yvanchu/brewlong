@@ -381,8 +381,8 @@
     }
   }
 
-  // ===== Initialize 3 columns =====
-  for (let i = 0; i < 3; i++) {
+  // ===== Initialize 4 columns =====
+  for (let i = 0; i < 4; i++) {
     createColumn();
   }
 })();
