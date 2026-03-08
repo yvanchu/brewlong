@@ -22,6 +22,7 @@ HEIGHT = LABEL_WIDTH_PX   # 50 mm → 399 px
 # ---------------------------------------------------------------------------
 NAME_FONT_SIZE = 30
 MOD_FONT_SIZE = 30
+NOTE_FONT_SIZE = 24
 ORDER_FONT_SIZE = 42
 
 # ---------------------------------------------------------------------------
@@ -70,6 +71,7 @@ def generate_label(
     modifiers: list[str],
     order_number: str,
     output_dir: str = ".",
+    note: str = "",
 ) -> Path:
     """Render a single drink label and return the path to the saved PNG.
 
@@ -84,6 +86,7 @@ def generate_label(
 
     name_font = _load_font(_BOLD_CANDIDATES, NAME_FONT_SIZE, bold=True)
     mod_font = _load_font(_REGULAR_CANDIDATES, MOD_FONT_SIZE, bold=False)
+    note_font = _load_font(_REGULAR_CANDIDATES, NOTE_FONT_SIZE, bold=False)
     order_font = _load_font(_BOLD_CANDIDATES, ORDER_FONT_SIZE, bold=True)
 
     y = TOP_MARGIN
@@ -112,7 +115,21 @@ def generate_label(
         bbox = draw.textbbox((PADDING, y), text, font=mod_font)
         y = bbox[3] + 2
 
-    # ── 4. Order number (bold, horizontally centred, pinned to bottom) ─────
+    # ── 4. Note (if present) ───────────────────────────────────────────────
+    if note:
+        y += SEPARATOR_GAP
+        draw.line([(PADDING, y), (WIDTH - PADDING, y)], fill=0, width=1)
+        y += SEPARATOR_GAP + 2
+
+        note_avg_char_w = draw.textlength("M", font=note_font)
+        note_max_chars = max(int(usable_width / note_avg_char_w), 4)
+        note_lines = textwrap.wrap(note, width=note_max_chars)
+        for nline in note_lines[:3]:  # cap at 3 lines
+            draw.text((PADDING, y), nline, font=note_font, fill=0)
+            bbox = draw.textbbox((PADDING, y), nline, font=note_font)
+            y = bbox[3] + 2
+
+    # ── 5. Order number (bold, horizontally centred, pinned to bottom) ─────
     order_text = f"{order_number}"
     bbox = draw.textbbox((0, 0), order_text, font=order_font)
     text_w = bbox[2] - bbox[0]

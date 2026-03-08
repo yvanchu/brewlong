@@ -50,13 +50,21 @@ async def process_orders(
 
         all_ok = True
 
+        order_note = order.get("note", "")
+
         for item in order["line_items"]:
+            # Combine order-level and item-level notes
+            item_note = item.get("note", "")
+            note_parts = [n for n in (order_note, item_note) if n]
+            note = " | ".join(note_parts)
+
             for copy in range(item["quantity"]):
                 label_path = generate_label(
                     item_name=item["name"],
                     modifiers=item["modifiers"],
                     order_number=order["order_number"],
                     output_dir=str(LABEL_OUTPUT_DIR),
+                    note=note,
                 )
 
                 success = await printer.print_label(label_path)
@@ -147,13 +155,20 @@ async def reprint_order(order_identifier: str) -> None:
     printer = PrinterService()
 
     try:
+        order_note = order.get("note", "")
+
         for item in order["line_items"]:
+            item_note = item.get("note", "")
+            note_parts = [n for n in (order_note, item_note) if n]
+            note = " | ".join(note_parts)
+
             for copy in range(item["quantity"]):
                 label_path = generate_label(
                     item_name=item["name"],
                     modifiers=item["modifiers"],
                     order_number=order["order_number"],
                     output_dir=str(LABEL_OUTPUT_DIR),
+                    note=note,
                 )
 
                 success = await printer.print_label(label_path)

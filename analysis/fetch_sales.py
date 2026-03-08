@@ -190,6 +190,15 @@ def main() -> None:
     orders = _fetch_all_orders(start_iso, end_iso)
     logger.info("Fetched %d order(s)", len(orders))
 
+    # ── filter out "test" orders (case-insensitive) ───────────
+    before = len(orders)
+    orders = [
+        o for o in orders
+        if o.get("order_number", "").strip().lower() != "test"
+    ]
+    if (removed := before - len(orders)):
+        logger.info("Filtered out %d test order(s)", removed)
+
     # ── write output ──────────────────────────────────────────
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 

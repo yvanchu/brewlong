@@ -61,21 +61,25 @@ def _parse_order(order) -> dict:
     """Parse a Square Order object into our simplified format."""
     order_id: str = order.id
     order_number = order.ticket_name or order_id[-4:].upper()
+    order_note: str = getattr(order, "note", None) or ""
 
     line_items: list[dict] = []
     for item in order.line_items or []:
         modifiers = [m.name for m in (item.modifiers or [])]
+        item_note: str = getattr(item, "note", None) or ""
         line_items.append(
             {
                 "name": item.name or "Unknown",
                 "quantity": int(item.quantity or "1"),
                 "modifiers": modifiers,
+                "note": item_note,
             }
         )
 
     return {
         "order_id": order_id,
         "order_number": order_number,
+        "note": order_note,
         "line_items": line_items,
     }
 
