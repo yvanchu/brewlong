@@ -2,7 +2,7 @@
   "use strict";
 
   // ===== Load tea data =====
-  const res = await fetch("teas.json");
+  const res = await fetch("teas_block.json");
   const data = await res.json();
   const TEAS = data.teas;
 

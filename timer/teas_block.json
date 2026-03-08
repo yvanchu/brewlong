@@ -1,0 +1,62 @@
+{
+  "teas": [
+    {
+      "name": "Banana Cream/Red Oolong Milk Tea [300ml]",
+      "types": {
+        "ice_milk": {
+          "grams": 15,
+          "stages": [
+            {
+              "time": 180,
+              "volume": 300
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Red",
+      "types": {
+        "hot": {
+          "grams": 6,
+          "stages": [
+            {
+              "time": 50,
+              "volume": 120
+            },
+            {
+              "time": 50,
+              "volume": 120
+            },
+            {
+              "time": 50,
+              "volume": 120
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Jasmine",
+      "types": {
+        "hot": {
+          "grams": 6,
+          "stages": [
+            {
+              "time": 50,
+              "volume": 120
+            },
+            {
+              "time": 20,
+              "volume": 120
+            },
+            {
+              "time": 40,
+              "volume": 120
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
