@@ -404,3 +404,20 @@ body {
 .btn-cancel:active {
   background: rgba(255, 71, 87, 0.15);
 }
+
+.btn-cancel.primed {
+  background: rgba(255, 71, 87, 0.2);
+  border-color: #ff6b7a;
+  color: #ff6b7a;
+  animation: pulse-cancel 1s ease-in-out infinite;
+}
+
+@keyframes pulse-cancel {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}

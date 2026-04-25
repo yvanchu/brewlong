@@ -101,7 +101,26 @@
     brewScreen.appendChild(stagesContainer);
 
     const cancelBtn = el("button", "btn-cancel", "Cancel");
-    cancelBtn.addEventListener("click", resetColumn);
+    let cancelPrimed = false;
+    let cancelTimeout = null;
+    cancelBtn.addEventListener("click", () => {
+      if (cancelPrimed) {
+        clearTimeout(cancelTimeout);
+        cancelPrimed = false;
+        cancelBtn.textContent = "Cancel";
+        cancelBtn.classList.remove("primed");
+        resetColumn();
+      } else {
+        cancelPrimed = true;
+        cancelBtn.textContent = "Confirm Cancel";
+        cancelBtn.classList.add("primed");
+        cancelTimeout = setTimeout(() => {
+          cancelPrimed = false;
+          cancelBtn.textContent = "Cancel";
+          cancelBtn.classList.remove("primed");
+        }, 3000);
+      }
+    });
     brewScreen.appendChild(cancelBtn);
 
     col.appendChild(brewScreen);

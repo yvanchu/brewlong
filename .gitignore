@@ -19,6 +19,7 @@ setup.sh
 # ── Analysis (fetched business data) ─────────────────────────
 analysis/data/
 analysis/*.md
+analysis/*.ipynb
 
 # ── Python ────────────────────────────────────────────────────
 __pycache__/
