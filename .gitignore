@@ -19,7 +19,8 @@ setup.sh
 # ── Analysis (fetched business data) ─────────────────────────
 analysis/data/
 analysis/*.md
-analysis/*.ipynb
+analysis/output/
+analysis/.ipynb_checkpoints/
 
 # ── Python ────────────────────────────────────────────────────
 __pycache__/

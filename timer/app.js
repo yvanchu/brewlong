@@ -2,7 +2,7 @@
   "use strict";
 
   // ===== Load tea data =====
-  const res = await fetch("teas_block.json");
+  const res = await fetch("teas_block_2.json");
   const data = await res.json();
   const TEAS = data.teas;
 
@@ -56,16 +56,21 @@
     teaGroup.appendChild(teaItems);
     selScreen.appendChild(teaGroup);
 
-    // Type list
-    const TYPE_OPTIONS = [
-      { key: "hot", label: "Hot Tea" },
-      { key: "ice", label: "Ice Tea" },
-      { key: "hot_milk", label: "Hot Milk Tea" },
-      { key: "ice_milk", label: "Ice Milk Tea" },
-    ];
-    const typeLabels = Object.fromEntries(
-      TYPE_OPTIONS.map((t) => [t.key, t.label]),
-    );
+    // Type list – derive from JSON, only show types that exist in the data
+    const ALL_TYPE_LABELS = {
+      hot: "Hot Tea",
+      ice: "Ice Tea",
+      hot_milk: "Hot Milk Tea",
+      ice_milk: "Ice Milk Tea",
+    };
+    const typeLabels = ALL_TYPE_LABELS;
+
+    // Collect all type keys that appear in any tea
+    const globalTypes = new Set();
+    TEAS.forEach((tea) => Object.keys(tea.types).forEach((k) => globalTypes.add(k)));
+    const TYPE_OPTIONS = ["hot", "ice", "hot_milk", "ice_milk"]
+      .filter((k) => globalTypes.has(k))
+      .map((k) => ({ key: k, label: ALL_TYPE_LABELS[k] || k }));
 
     const typeGroup = el("div", "list-group");
     typeGroup.appendChild(el("div", "list-label", "Type"));
@@ -136,12 +141,13 @@
         item.classList.toggle("selected", i === index);
       });
 
-      // Update type availability
+      // Update type availability – hide types not in this tea's data
       const tea = TEAS[index];
       const availableTypes = Object.keys(tea.types);
       Array.from(typeItems.children).forEach((item) => {
         const t = item.dataset.type;
         const available = t in tea.types;
+        item.style.display = available ? "" : "none";
         item.classList.toggle("disabled", !available);
         item.classList.remove("selected");
       });
