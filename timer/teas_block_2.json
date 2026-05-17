@@ -1,0 +1,74 @@
+{
+  "teas": [
+    {
+      "name": "Red",
+      "types": {
+        "hot": {
+          "grams": 10,
+          "stages": [
+            {
+              "time": 50,
+              "volume": 200
+            },
+            {
+              "time": 50,
+              "volume": 200
+            },
+            {
+              "time": 50,
+              "volume": 200
+            }
+          ]
+        },
+        "ice": {
+          "grams": 6,
+          "stages": [
+            {
+              "time": 120,
+              "volume": 240
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Green",
+      "types": {
+        "hot": {
+          "grams": 10,
+          "stages": [
+            {
+              "time": 60,
+              "volume": 200
+            },
+            {
+              "time": 30,
+              "volume": 200
+            },
+            {
+              "time": 30,
+              "volume": 200
+            }
+          ]
+        },
+        "ice": {
+          "grams": 4,
+          "stages": [
+            {
+              "time": 90,
+              "volume": 80
+            },
+            {
+              "time": 50,
+              "volume": 80
+            },
+            {
+              "time": 40,
+              "volume": 80
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
